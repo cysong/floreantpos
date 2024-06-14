@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.floreantpos.model">
+	<class lazy="false" name="com.floreantpos.model.GiftCard" table="GIFT_CARD">
+		<id column="CARD_NO" name="cardNumber" length="16" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<version name="version" column="VERSION_NO" type="long" />
+		<property column="OWNER_NAME" length="30" name="ownerName" type="java.lang.String" />
+		<property column="BALANCE" name="balance" type="java.lang.Double" />
+		<property name="issueDate" column="ISSUE_DATE" type="java.util.Date"></property>
+		<property name="activationDate" column="ACTIVATION_DATE" type="java.util.Date"></property>
+		<property name="deActivationDate" column="DEACTIVATION_DATE" type="java.util.Date"></property>
+		<property name="expiryDate" column="EXPIRY_DATE" type="java.util.Date"></property>
+		<property name="active" column="ACTIVE" type="java.lang.Boolean"></property>
+		<property name="disable" column="DISABLE" type="java.lang.Boolean"></property>
+		<property name="durationType" column="DURATION_TYPE" type="string" length="10" />
+		<property name="duration" column="DURATION" type="java.lang.Integer" />
+		<property name="pinNumber" column="PIN" type="string" length="8" />
+		<property name="point" column="POINT" type="java.lang.Integer" />
+		<property name="batchNo" column="BATCH_NO" type="java.lang.String" length="32" />
+		<property name="email" column="EMAIL" length="60" type="string" />
+		<property name="type" column="TYPE" length="60" type="string" />
+
+	</class>
+</hibernate-mapping>
+
+
