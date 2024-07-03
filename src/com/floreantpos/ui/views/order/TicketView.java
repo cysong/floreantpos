@@ -29,9 +29,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -42,6 +40,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import com.github.cysong.AutoKitchenManager;
 import net.miginfocom.swing.MigLayout;
 
 import com.floreantpos.IconFactory;
@@ -387,8 +386,14 @@ public class TicketView extends JPanel {
 	}// GEN-LAST:event_doFinishOrder
 
 	public synchronized void sendTicketToKitchen() {// GEN-FIRST:event_doFinishOrder
+		boolean newTicket = ticket.getId() == null;
+		Ticket oldTicket = null;
+		if(!newTicket){
+			oldTicket = TicketDAO.getInstance().get(ticket.getId());
+		}
 		saveTicketIfNeeded();
 		if (ticket.getOrderType().isShouldPrintToKitchen()) {
+			sendTicketToAutoKitchen(oldTicket, ticket);
 			if (ticket.needsKitchenPrint()) {
 				ReceiptPrintService.printToKitchen(ticket);
 				TicketDAO.getInstance().refresh(ticket);
@@ -397,6 +402,10 @@ public class TicketView extends JPanel {
 			}
 		}
 		OrderController.saveOrder(ticket);
+	}
+
+	private synchronized void sendTicketToAutoKitchen(Ticket oldTicket, Ticket newTicket) {
+		AutoKitchenManager.receiveTicket(oldTicket, newTicket);
 	}
 
 	public synchronized void doHoldOrder() {// GEN-FIRST:event_doFinishOrder
