@@ -1,8 +1,11 @@
 package com.floreantpos.model.dao;
 
+import com.floreantpos.model.KitchenTicketItem;
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  * This is an automatically generated DAO class which should not be edited.
@@ -208,8 +211,8 @@ public abstract class BaseKitchenTicketItemDAO extends com.floreantpos.model.dao
 	/**
 	 * Re-read the state of the given instance from the underlying database. It is inadvisable to use this to implement
 	 * long-running sessions that span many business tasks. This method is, however, useful in certain special circumstances.
-	 * For example 
-	 * <ul> 
+	 * For example
+	 * <ul>
 	 * <li>where a database trigger alters the object state upon insert or update</li>
 	 * <li>after executing direct SQL (eg. a mass update) in the same session</li>
 	 * <li>after inserting a Blob or Clob</li>
@@ -220,5 +223,17 @@ public abstract class BaseKitchenTicketItemDAO extends com.floreantpos.model.dao
 		refresh((Object) kitchenTicketItem, s);
 	}
 
+	public KitchenTicketItem getByTicketItemId(Integer ticketItemId) {
+		Session session = null;
+
+		try {
+			session = getSession();
+			Criteria criteria = session.createCriteria(getReferenceClass());
+			criteria.add(Restrictions.eq(KitchenTicketItem.PROP_TICKET_ITEM_ID, ticketItemId));
+			return (KitchenTicketItem)criteria.uniqueResult();
+		} finally {
+			closeSession(session);
+		}
+	}
 
 }
